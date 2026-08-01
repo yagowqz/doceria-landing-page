@@ -229,6 +229,115 @@
   }
   footer strong{ color:#fff; }
 
+  /* ---------- Cart: add button state ---------- */
+  .order-btn.add-btn{ border:none; cursor:pointer; font-family:'Nunito', sans-serif; }
+  .order-btn.add-btn svg{ width:16px; height:16px; }
+  .order-btn.add-btn.added{ background:var(--acai-deep); }
+
+  /* ---------- Floating cart button ---------- */
+  .cart-fab{
+    position:fixed; right:20px; bottom:20px; z-index:80;
+    background:var(--choco); color:#fff;
+    width:60px; height:60px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 14px 28px -8px rgba(74,42,27,0.55);
+    border:none; cursor:pointer;
+    transition: transform .15s ease;
+  }
+  .cart-fab:hover{ transform:translateY(-3px) scale(1.03); }
+  .cart-fab svg{ width:26px; height:26px; }
+  .cart-fab .badge{
+    position:absolute; top:-4px; right:-4px;
+    background:var(--morango); color:#fff;
+    font-family:'Baloo 2'; font-weight:800; font-size:0.75rem;
+    min-width:22px; height:22px; border-radius:999px;
+    display:flex; align-items:center; justify-content:center;
+    padding:0 5px; border:2px solid var(--creme);
+  }
+  .cart-fab .badge.hidden{ display:none; }
+
+  /* ---------- Cart panel ---------- */
+  .cart-overlay{
+    position:fixed; inset:0; z-index:90;
+    background:rgba(74,42,27,0.45);
+    opacity:0; pointer-events:none;
+    transition:opacity .2s ease;
+  }
+  .cart-overlay.open{ opacity:1; pointer-events:auto; }
+  .cart-panel{
+    position:fixed; top:0; right:0; bottom:0; z-index:91;
+    width:min(400px, 92vw);
+    background:var(--creme);
+    box-shadow:-16px 0 40px -12px rgba(74,42,27,0.35);
+    transform:translateX(100%);
+    transition:transform .25s ease;
+    display:flex; flex-direction:column;
+  }
+  .cart-panel.open{ transform:translateX(0); }
+  .cart-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 22px; border-bottom:1px solid rgba(74,42,27,0.1);
+  }
+  .cart-head h3{ font-size:1.3rem; }
+  .cart-close{
+    width:36px; height:36px; border-radius:50%; border:none;
+    background:#fff; box-shadow:var(--shadow); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; color:var(--choco); flex:none;
+  }
+  .cart-items{ flex:1; overflow-y:auto; padding:14px 22px; }
+  .cart-empty{ text-align:center; padding:40px 10px; color:var(--choco-soft); font-weight:700; }
+  .cart-empty .emoji{ font-size:2.4rem; margin-bottom:10px; }
+  .cart-item{
+    display:flex; align-items:center; gap:12px;
+    background:#fff; border-radius:18px; padding:12px 14px;
+    box-shadow:var(--shadow); margin-bottom:12px;
+  }
+  .cart-item .ci-emoji{
+    width:42px; height:42px; border-radius:12px; flex:none;
+    background:var(--creme-2); display:flex; align-items:center; justify-content:center;
+    font-size:1.3rem;
+  }
+  .cart-item .ci-info{ flex:1; min-width:0; }
+  .cart-item .ci-name{ font-weight:800; font-size:0.9rem; line-height:1.25; }
+  .cart-item .ci-price{ font-size:0.8rem; color:var(--choco-soft); font-weight:700; }
+  .cart-item .ci-qty{
+    display:flex; align-items:center; gap:8px; flex:none;
+  }
+  .ci-qty button{
+    width:26px; height:26px; border-radius:50%; border:none;
+    background:var(--creme-2); color:var(--choco); font-weight:800;
+    cursor:pointer; font-size:1rem; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .ci-qty button:hover{ background:var(--morango-soft); }
+  .ci-qty span{ font-weight:800; min-width:16px; text-align:center; font-size:0.9rem; }
+  .ci-remove{
+    background:none; border:none; color:var(--choco-soft); cursor:pointer;
+    font-size:1rem; flex:none; padding:2px;
+  }
+  .ci-remove:hover{ color:var(--morango); }
+  .cart-foot{
+    border-top:1px solid rgba(74,42,27,0.1);
+    padding:18px 22px 22px; background:var(--creme-2);
+  }
+  .cart-total{
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:'Baloo 2'; font-weight:800; font-size:1.15rem;
+    margin-bottom:14px;
+  }
+  .cart-checkout{
+    width:100%; justify-content:center;
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--whats); color:#fff; font-family:'Baloo 2'; font-weight:700;
+    font-size:1rem; padding:15px 20px; border-radius:999px;
+    border:none; cursor:pointer;
+    box-shadow:0 14px 26px -10px rgba(34,197,94,0.65);
+  }
+  .cart-checkout:hover{ background:var(--whats-deep); }
+  .cart-checkout svg{ width:20px; height:20px; }
+  .cart-checkout:disabled{ opacity:0.5; cursor:not-allowed; }
+
   @media (max-width:640px){
     .hero{ padding:40px 0 70px; }
     .section{ padding:52px 0 58px; }
@@ -288,10 +397,7 @@
         <p class="desc">Azedinho na medida, super cremoso e refrescante.</p>
         <div class="card-foot">
           <span class="price">R$ 6,00</span>
-          <a class="order-btn" href="https://wa.me/5585985307454?text=Ol%C3%A1!%20Quero%20pedir%3A%201%20Mousse%20de%20Maracuj%C3%A1%20(R%246%2C00)%20%F0%9F%98%8B" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.3 5.2 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3.4.9.9-3.3-.2-.3C3.6 14.7 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 8.9-8.9 8.9z"/></svg>
-            Pedir
-          </a>
+          <button type="button" class="order-btn add-btn" data-name='Mousse de Maracujá' data-price="6.00" data-emoji="🥭" onclick="addToCart(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.5" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.2 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg><span class="btn-label">Adicionar</span></button>
         </div>
       </div>
       <div class="card">
@@ -302,10 +408,7 @@
         <p class="desc">Fresquinho, leve e com aquele toque cítrico gostoso.</p>
         <div class="card-foot">
           <span class="price">R$ 6,00</span>
-          <a class="order-btn" href="https://wa.me/5585985307454?text=Ol%C3%A1!%20Quero%20pedir%3A%201%20Mousse%20de%20Lim%C3%A3o%20(R%246%2C00)%20%F0%9F%98%8B" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.3 5.2 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3.4.9.9-3.3-.2-.3C3.6 14.7 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 8.9-8.9 8.9z"/></svg>
-            Pedir
-          </a>
+          <button type="button" class="order-btn add-btn" data-name='Mousse de Limão' data-price="6.00" data-emoji="🍋" onclick="addToCart(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.5" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.2 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg><span class="btn-label">Adicionar</span></button>
         </div>
       </div>
       <div class="card">
@@ -316,10 +419,7 @@
         <p class="desc">Morango com Oreo — a combinação que todo mundo pede de novo.</p>
         <div class="card-foot">
           <span class="price">R$ 6,00</span>
-          <a class="order-btn" href="https://wa.me/5585985307454?text=Ol%C3%A1!%20Quero%20pedir%3A%201%20Mousse%20Sensa%C3%A7%C3%A3o%20-%20Morango%20com%20Oreo%20(R%246%2C00)%20%F0%9F%98%8B" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.3 5.2 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3.4.9.9-3.3-.2-.3C3.6 14.7 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 8.9-8.9 8.9z"/></svg>
-            Pedir
-          </a>
+          <button type="button" class="order-btn add-btn" data-name='Mousse Sensação (Morango com Oreo)' data-price="6.00" data-emoji="🍓" onclick="addToCart(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.5" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.2 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg><span class="btn-label">Adicionar</span></button>
         </div>
       </div>
     </div>
@@ -345,10 +445,7 @@
         <p class="desc">O clássico casamento de sabores que ninguém resiste.</p>
         <div class="card-foot">
           <span class="price">R$ 15,00</span>
-          <a class="order-btn" href="https://wa.me/5585985307454?text=Ol%C3%A1!%20Quero%20pedir%3A%201%20Sorvete%20no%20Pote%20Casadinho%20-%20Ninho%20com%20A%C3%A7a%C3%AD%20(R%2415%2C00)%20%F0%9F%98%8B" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.3 5.2 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3.4.9.9-3.3-.2-.3C3.6 14.7 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 8.9-8.9 8.9z"/></svg>
-            Pedir
-          </a>
+          <button type="button" class="order-btn add-btn" data-name='Sorvete Casadinho (Ninho com Açaí)' data-price="15.00" data-emoji="🍨" onclick="addToCart(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.5" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.2 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg><span class="btn-label">Adicionar</span></button>
         </div>
       </div>
       <div class="card">
@@ -359,10 +456,7 @@
         <p class="desc">Açaí batido na textura ideal, puro sabor da fruta.</p>
         <div class="card-foot">
           <span class="price">R$ 15,00</span>
-          <a class="order-btn" href="https://wa.me/5585985307454?text=Ol%C3%A1!%20Quero%20pedir%3A%201%20Sorvete%20no%20Pote%20de%20A%C3%A7a%C3%AD%20Puro%20(R%2415%2C00)%20%F0%9F%98%8B" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.3 5.2 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3.4.9.9-3.3-.2-.3C3.6 14.7 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 8.9-8.9 8.9z"/></svg>
-            Pedir
-          </a>
+          <button type="button" class="order-btn add-btn" data-name='Sorvete de Açaí Puro' data-price="15.00" data-emoji="🫐" onclick="addToCart(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.5" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.2 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg><span class="btn-label">Adicionar</span></button>
         </div>
       </div>
     </div>
@@ -388,10 +482,7 @@
         <p class="desc">A opção clássica, sempre geladinha e cheia de sabor.</p>
         <div class="card-foot">
           <span class="price">R$ 1,50</span>
-          <a class="order-btn" href="https://wa.me/5585985307454?text=Ol%C3%A1!%20Quero%20pedir%3A%20Picol%C3%A9%20de%20R%241%2C50%20%F0%9F%98%8B" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.3 5.2 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3.4.9.9-3.3-.2-.3C3.6 14.7 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 8.9-8.9 8.9z"/></svg>
-            Pedir
-          </a>
+          <button type="button" class="order-btn add-btn" data-name='Picolé R$ 1,50' data-price="1.50" data-emoji="🧊" onclick="addToCart(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.5" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.2 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg><span class="btn-label">Adicionar</span></button>
         </div>
       </div>
       <div class="card">
@@ -402,10 +493,7 @@
         <p class="desc">Versão especial, mais recheada e ainda mais gostosa.</p>
         <div class="card-foot">
           <span class="price">R$ 2,50</span>
-          <a class="order-btn" href="https://wa.me/5585985307454?text=Ol%C3%A1!%20Quero%20pedir%3A%20Picol%C3%A9%20de%20R%242%2C50%20%F0%9F%98%8B" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.3 5.2 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3.4.9.9-3.3-.2-.3C3.6 14.7 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 8.9-8.9 8.9z"/></svg>
-            Pedir
-          </a>
+          <button type="button" class="order-btn add-btn" data-name='Picolé R$ 2,50' data-price="2.50" data-emoji="🍧" onclick="addToCart(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.5" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.2 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg><span class="btn-label">Adicionar</span></button>
         </div>
       </div>
       <div class="card">
@@ -416,10 +504,7 @@
         <p class="desc">Bem docinho e geladinho, ótimo pra matar aquela vontade.</p>
         <div class="card-foot">
           <span class="price">R$ 1,00</span>
-          <a class="order-btn" href="https://wa.me/5585985307454?text=Ol%C3%A1!%20Quero%20pedir%3A%20Marujinho%20(R%241%2C00)%20%F0%9F%98%8B" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.3 5.2 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3.4.9.9-3.3-.2-.3C3.6 14.7 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 8.9-8.9 8.9z"/></svg>
-            Pedir
-          </a>
+          <button type="button" class="order-btn add-btn" data-name='Marujinho' data-price="1.00" data-emoji="🍬" onclick="addToCart(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.5" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.2 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg><span class="btn-label">Adicionar</span></button>
         </div>
       </div>
     </div>
@@ -469,6 +554,144 @@
   <strong>Mousse Mania</strong> · Caucaia/CE · Feito com carinho, sempre fresquinho 🍨<br>
   Pedidos apenas pelo WhatsApp — clique nos botões acima.
 </footer>
+
+<!-- CARRINHO -->
+<button class="cart-fab" id="cartFab" onclick="toggleCart(true)" aria-label="Abrir carrinho">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.5" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.2 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg>
+  <span class="badge hidden" id="cartBadge">0</span>
+</button>
+
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+
+<div class="cart-panel" id="cartPanel" role="dialog" aria-label="Seu carrinho">
+  <div class="cart-head">
+    <h3>Seu pedido 🛒</h3>
+    <button class="cart-close" onclick="toggleCart(false)" aria-label="Fechar carrinho">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="emoji">🍨</div>
+      Seu carrinho está vazio.<br>Adicione seus docinhos favoritos!
+    </div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">R$ 0,00</span>
+    </div>
+    <button class="cart-checkout" id="cartCheckout" disabled onclick="checkoutCart()">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.3 5.2 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3.4.9.9-3.3-.2-.3C3.6 14.7 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 8.9-8.9 8.9z"/></svg>
+      Finalizar pedido no WhatsApp
+    </button>
+  </div>
+</div>
+
+<script>
+  var CART_PHONE = "5585985307454";
+  var cart = []; // { name, price, emoji, qty }
+
+  function formatBRL(v){
+    return "R$ " + v.toFixed(2).replace(".", ",");
+  }
+
+  function addToCart(btn){
+    var name = btn.getAttribute('data-name');
+    var price = parseFloat(btn.getAttribute('data-price'));
+    var emoji = btn.getAttribute('data-emoji');
+
+    var existing = cart.find(function(i){ return i.name === name; });
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({ name: name, price: price, emoji: emoji, qty: 1 });
+    }
+    renderCart();
+
+    var label = btn.querySelector('.btn-label');
+    var original = label.textContent;
+    label.textContent = "Adicionado ✓";
+    btn.classList.add('added');
+    setTimeout(function(){
+      label.textContent = original;
+      btn.classList.remove('added');
+    }, 900);
+  }
+
+  function changeQty(name, delta){
+    var item = cart.find(function(i){ return i.name === name; });
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) {
+      cart = cart.filter(function(i){ return i.name !== name; });
+    }
+    renderCart();
+  }
+
+  function removeItem(name){
+    cart = cart.filter(function(i){ return i.name !== name; });
+    renderCart();
+  }
+
+  function renderCart(){
+    var itemsEl = document.getElementById('cartItems');
+    var totalEl = document.getElementById('cartTotal');
+    var badgeEl = document.getElementById('cartBadge');
+    var checkoutBtn = document.getElementById('cartCheckout');
+
+    var totalQty = cart.reduce(function(s,i){ return s + i.qty; }, 0);
+    var totalPrice = cart.reduce(function(s,i){ return s + i.qty * i.price; }, 0);
+
+    if (totalQty > 0) {
+      badgeEl.textContent = totalQty;
+      badgeEl.classList.remove('hidden');
+    } else {
+      badgeEl.classList.add('hidden');
+    }
+
+    totalEl.textContent = formatBRL(totalPrice);
+    checkoutBtn.disabled = cart.length === 0;
+
+    if (cart.length === 0) {
+      itemsEl.innerHTML = '<div class="cart-empty"><div class="emoji">🍨</div>Seu carrinho está vazio.<br>Adicione seus docinhos favoritos!</div>';
+      return;
+    }
+
+    itemsEl.innerHTML = cart.map(function(item){
+      var safeName = item.name.replace(/'/g, "\\'");
+      return '' +
+        '<div class="cart-item">' +
+          '<div class="ci-emoji">' + item.emoji + '</div>' +
+          '<div class="ci-info">' +
+            '<div class="ci-name">' + item.name + '</div>' +
+            '<div class="ci-price">' + formatBRL(item.price) + ' cada</div>' +
+          '</div>' +
+          '<div class="ci-qty">' +
+            '<button onclick="changeQty(\'' + safeName + '\', -1)" aria-label="Diminuir">−</button>' +
+            '<span>' + item.qty + '</span>' +
+            '<button onclick="changeQty(\'' + safeName + '\', 1)" aria-label="Aumentar">+</button>' +
+          '</div>' +
+          '<button class="ci-remove" onclick="removeItem(\'' + safeName + '\')" aria-label="Remover">🗑️</button>' +
+        '</div>';
+    }).join('');
+  }
+
+  function toggleCart(open){
+    document.getElementById('cartPanel').classList.toggle('open', open);
+    document.getElementById('cartOverlay').classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  function checkoutCart(){
+    if (cart.length === 0) return;
+    var lines = cart.map(function(item){
+      return "• " + item.qty + "x " + item.name + " — " + formatBRL(item.price * item.qty);
+    });
+    var total = cart.reduce(function(s,i){ return s + i.qty * i.price; }, 0);
+    var msg = "Olá! Quero fazer o seguinte pedido:\n" + lines.join("\n") + "\n\nTotal: " + formatBRL(total);
+    var url = "https://wa.me/" + CART_PHONE + "?text=" + encodeURIComponent(msg);
+    window.open(url, "_blank", "noopener");
+  }
+</script>
 
 </body>
 </html>
